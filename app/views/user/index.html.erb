@@ -1,0 +1,15 @@
+<h1>Weather App <h1> 
+<% if current_user %>
+  <%= form_with(url: '/get_weather', method: :get, local: true) do |f| %>
+      <%= f.label :City %>
+      <%= f.text_field :city %>
+      <%=  f.submit("Get Weather") %>
+  <% end %>
+  <%= link_to 'Logout', '/logout', :data => { :confirm => 'Are you sure?' }%>
+  <p>Temperature: <%= @response %>°C</p>
+<% else %>
+    <%= link_to 'Signup', '/signup'%>
+    <%= link_to 'Login', '/login'%>
+<% end %>
+
+<!-- <h1>Weather App</h1>
