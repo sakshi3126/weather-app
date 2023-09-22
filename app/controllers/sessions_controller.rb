@@ -3,8 +3,8 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(email: params[:email])
-    if user && user.password_digest == (params[:password_digest])
+    user = User.find_by(email: params[:session][:email])
+    if user && user.password_digest == (params[:session][:password_digest])
       session[:user_id] = user.id
       flash[:notice]="Login successful"
       redirect_to '/'

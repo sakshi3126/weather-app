@@ -1,15 +1,61 @@
-<h1>Weather App <h1> 
-<% if current_user %>
-  <%= form_with(url: '/get_weather', method: :get, local: true) do |f| %>
-      <%= f.label :City %>
-      <%= f.text_field :city %>
-      <%=  f.submit("Get Weather") %>
-  <% end %>
-  <%= link_to 'Logout', '/logout', :data => { :confirm => 'Are you sure?' }%>
-  <p>Temperature: <%= @response %>°C</p>
-<% else %>
-    <%= link_to 'Signup', '/signup'%>
-    <%= link_to 'Login', '/login'%>
-<% end %>
+<html>
+  <body>
+    <div class="container">
+      <div class="login-box">
+        <h2>Weather App</h2>
+        <% if current_user %>
+          <% if notice %>
+            <p class="alert alert-success"><%= notice %></p>
+          <% end %>
+          <% if alert %>
+            <p class="alert alert-danger"><%= alert %></p>
+          <% end %>
+          <%= form_tag('/get_weather', method: :get) do %>
+            <% if flash[:alert] %>
+              <div class="alert alert-danger">
+                <%= flash[:alert] %>
+              </div>
+            <% end %>
+            <div class="form-group">
+              <%= label_tag :city, 'City' %>
+              <%= text_field_tag :city %>
+            </div>
+            <div class="form-group">
+              <%= submit_tag 'Get Weather', onclick: 'myFunction()' %>
+            </div>
+          <% end %>
+          <%= link_to 'Logout', '/logout', data: { confirm: 'Are you sure?' } %>
+          <p id="temp">Temperature: <%= @response %>°C</p>
+        <% else %>
+          <%= link_to 'Signup', '/signup' %>
+          <%= link_to 'Login', '/login' %>
+        <% end %>  
+      </div>
+    </div>
+  </body>
+</html>
 
-<!-- <h1>Weather App</h1>
+
+<script>
+  function myFunction() {
+    const city = document.getElementById('city').value
+    const apiKey = "ff2b2c7fbdef209150a13860f16c38e6";
+
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+    fetch(apiUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json(); // Parse the response as JSON
+      })
+      .then(data => {
+        document.getElementById("temp").innerHTML = "Temperature: " + data["main"]["temp"] + "°C";
+        console.log(data);
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+    });
+  }
+</script>

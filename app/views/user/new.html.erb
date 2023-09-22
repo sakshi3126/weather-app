@@ -1,15 +1,35 @@
-<%= form_for :user, url: '/users' do |form| %>
-        <h2> Sign Up </h2>
-          
-        <%= form.label :first_name %>
-        <%= form.text_field :first_name %>
-        <%= form.label :last_name %>
-        <%= form.text_field :last_name %>
-         
-        <%= form.label :email %>
-        <%= form.text_field :email %>
-        
-        <%= form.label :password %>
-        <%= form.password_field :password_digest %>
-        <%=  submit_tag("Create Account") %>
-<% end %>
+<html lang="en">
+  <body>
+    <div class="container">
+      <div class="login-box">
+        <h2>Signup</h2>
+        <%= form_for :user, url: '/users' do |form| %>
+          <% if flash[:alert] %>
+            <div class="alert alert-danger">
+              <%= flash[:alert] %>
+            </div>
+          <% end %>
+          <div class="form-group">
+            <%= form.label :first_name %>
+            <%= form.text_field :first_name, class: 'form-control', required: true %>
+          </div>
+          <div class="form-group">
+            <%= form.label :last_name %>
+            <%= form.text_field :last_name, class: 'form-control', required: true %>
+          </div>
+          <div class="form-group">
+            <%= form.label :email %>
+            <%= form.email_field :email, class: 'form-control', required: true %>
+          </div>
+          <div class="form-group">
+            <%= form.label :password %>
+            <%= form.password_field :password_digest, class: 'form-control', required: true %>
+          </div>
+          <div class="form-group">
+            <%=  submit_tag("Create Account") %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </body>
+</html>
